@@ -252,7 +252,7 @@ public class App extends PApplet {
                 middleCol = toCol + 1;
             }
             // check for piece
-            if (board[middleRow][middleCol] == ' ') {
+            if (board[middleRow][middleCol] == null) {
                 return false;
             }
         }
@@ -314,16 +314,16 @@ public class App extends PApplet {
             }
             ellipse((x + 0.5f) * CELLSIZE, (y + 0.5f) * CELLSIZE, CELLSIZE * 0.7f, CELLSIZE * 0.7f);
 
-            if(board[x][y].isBlack() && board[x][y].isKing()){
+            if(board[x][y].isBlack && board[x][y].isKing){
                 fill(255);
-            } else if(!board[x][y].isBlack() && board[x][y].isKing()){
+            } else if(!board[x][y].isBlack && board[x][y].isKing){
                 fill(0);
             }
             ellipse((x + 0.5f) * CELLSIZE, (y + 0.5f) * CELLSIZE, CELLSIZE * 0.5f, CELLSIZE * 0.5f);
 
-            if(board[x][y].isBlack() && board[x][y].isKing()){
+            if(board[x][y].isBlack && board[x][y].isKing){
                 fill(255);
-            } else if(!board[x][y].isBlack() && board[x][y].isKing()){
+            } else if(!board[x][y].isBlack && board[x][y].isKing){
                 fill(0);
             }
             ellipse((x + 0.5f) * CELLSIZE, (y + 0.5f) * CELLSIZE, CELLSIZE * 0.3f, CELLSIZE * 0.3f);
