@@ -159,15 +159,21 @@ public class App extends PApplet {
 
     private void drawPiece(int x, int y) {
         if (board[x][y] != null) {
-
+            // Draw the ring with a different color
             if (board[x][y].isBlack) {
+                fill(255);
+            } else {
                 fill(0);
             }
-            else {
-                fill(255);
-            }
+            ellipse((x + 0.5f) * CELLSIZE, (y + 0.5f) * CELLSIZE, CELLSIZE * 0.9f, CELLSIZE * 0.9f);
 
-            // Checks bounds of cells
+
+            // Draw the original ellipse representing the piece
+            if (board[x][y].isBlack) {
+                fill(0); // Black color for the piece
+            } else {
+                fill(255); // White color for the piece
+            }
             ellipse((x + 0.5f) * CELLSIZE, (y + 0.5f) * CELLSIZE, CELLSIZE * 0.75f, CELLSIZE * 0.75f);
         }
     }
