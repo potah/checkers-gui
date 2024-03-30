@@ -101,6 +101,9 @@ public class App extends PApplet {
 
     }
 
+    Piece selectedPiece = null;
+    int selectedX = -1, selectedY = -1;
+
     @Override
     public void mousePressed(MouseEvent e) {
         //Check if the user clicked on a piece which is theirs - make sure only whoever's current turn it is, can click on pieces
@@ -109,6 +112,18 @@ public class App extends PApplet {
 		//TODO: Remove captured pieces from the board
 		//TODO: Check if piece should be promoted and promote it
 		//TODO: Then it's the other player's turn.
+
+        int x = mouseX / CELLSIZE;
+        int y = mouseY / CELLSIZE;
+
+        // Check if the selected cell is within bounds
+        if (x >= 0 && x < BOARD_WIDTH && y >= 0 && y < BOARD_WIDTH) {
+            if (selectedPiece == null && board[x][y] != null) {
+                // Select the piece
+            } else if (selectedPiece != null) {
+                // Attempt to move the selected piece
+            }
+        }
     }
 
     @Override
@@ -124,6 +139,7 @@ public class App extends PApplet {
         this.noStroke();
         background(180);
 		//draw the board
+        drawBoard();
 		
 		//draw highlighted cells
         
