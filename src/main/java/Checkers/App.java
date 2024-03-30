@@ -308,11 +308,25 @@ public class App extends PApplet {
 
             // Draw the original ellipse representing the piece
             if (board[x][y].isBlack) {
-                fill(0); // Black color for the piece
+                fill(0);
             } else {
-                fill(255); // White color for the piece
+                fill(255);
             }
             ellipse((x + 0.5f) * CELLSIZE, (y + 0.5f) * CELLSIZE, CELLSIZE * 0.7f, CELLSIZE * 0.7f);
+
+            if(board[x][y].isBlack() && board[x][y].isKing()){
+                fill(255);
+            } else if(!board[x][y].isBlack() && board[x][y].isKing()){
+                fill(0);
+            }
+            ellipse((x + 0.5f) * CELLSIZE, (y + 0.5f) * CELLSIZE, CELLSIZE * 0.5f, CELLSIZE * 0.5f);
+
+            if(board[x][y].isBlack() && board[x][y].isKing()){
+                fill(255);
+            } else if(!board[x][y].isBlack() && board[x][y].isKing()){
+                fill(0);
+            }
+            ellipse((x + 0.5f) * CELLSIZE, (y + 0.5f) * CELLSIZE, CELLSIZE * 0.3f, CELLSIZE * 0.3f);
         }
     }
 
