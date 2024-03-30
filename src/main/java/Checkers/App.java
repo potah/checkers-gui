@@ -60,20 +60,35 @@ public class App extends PApplet {
         size(WIDTH, HEIGHT);
     }
 
+    private void oldInitializeBoard() {
+        // Implement this method to fill the board array with pieces in their starting
+        // positions.
+        for(int i = 0; i < board.length; i++) {
+            for(int j = 0; j < board[i].length; j++) {
+                if((i + j) % 2 != 0) {
+                    if (i < 3) {
+                        board[i][j] = new Piece(false);
+                    } else if (i >= 5) {
+                        board[i][j] = new Piece(true);
+                    }
+                }
+            }
+        }
+    }
     private void initializeBoard() {
         for (int y = 0; y < BOARD_WIDTH; y++) {
             for (int x = 0; x < BOARD_WIDTH; x += 2) {
                 if (y < 3) {
                     if ((y % 2 == 0)) {
-                        board[x][y] = new Piece(true);
-                    } else {
-                        board[x + 1][y] = new Piece(true);
-                    }
-                } else if (y > 4) {
-                    if ((y % 2 == 0)) {
                         board[x][y] = new Piece(false);
                     } else {
                         board[x + 1][y] = new Piece(false);
+                    }
+                } else if (y > 4) {
+                    if ((y % 2 == 0)) {
+                        board[x][y] = new Piece(true);
+                    } else {
+                        board[x + 1][y] = new Piece(true);
                     }
                 }
             }
@@ -150,18 +165,20 @@ public class App extends PApplet {
         }
     }
 
-    private void processMove(int toRow, int toCol) {
+    private void processMove(int toX, int toY) {
         board[selectedX][selectedY] = null;
-        board[toRow][toCol] = selectedPiece;
+        board[toX][toY] = selectedPiece;
 
         for (int i = 0; i < 8; i++) {
-            if (board[0][i].isBlack) {
-                board[0][i].isKing = true;
+            Piece piece = board[i][0];
+            if (piece != null && piece.isBlack) {
+                piece.isKing = true;
             }
         }
         for (int i = 0; i < 8; i++) {
-            if (!board[7][i].isBlack) {
-                board[7][i].isKing = true;
+            Piece piece = board[i][7];
+            if (piece != null && !piece.isBlack) {
+                piece.isKing = true;
             }
         }
     }
@@ -169,8 +186,8 @@ public class App extends PApplet {
         for (int x = 0; x < BOARD_WIDTH; x++) {
             for (int y = 0; y < BOARD_WIDTH; y++) {
                 if (isValidMove(fromRow, fromCol, x, y)) {
-                    // makey bluey
-
+                    // make the cell blue
+                    highlightValidMoveCell(x, y);
                 }
             }
         }
@@ -217,16 +234,16 @@ public class App extends PApplet {
         }
 
         // check correct turn b should be mod 2 = 0
-        if (piece.isBlack && (moves % 2) != 0) {
+        if (piece.isBlack && white_move) {
             return false;
         }
 
         // w can only go to smaller cols, b can only go to bigger cols
         // W or B can go forward or back
-        if (piece == 'w' && toRow < fromRow) {
+        if (!piece.isBlack && !piece.isKing && toRow < fromRow) {
             return false;
         }
-        if (piece == 'b' && toRow > fromRow) {
+        if (piece.isBlack && !piece.isKing && toRow > fromRow) {
             return false;
         }
 
@@ -278,6 +295,7 @@ public class App extends PApplet {
 		
 		//draw highlighted cells
         if (selectedPiece != null) {
+            highlightSelectedCell();
             highlightValidMoves(selectedX, selectedY);
         }
         
@@ -286,13 +304,29 @@ public class App extends PApplet {
     }
 
     private void drawBoard() {
-        for (int y = 0; y < BOARD_WIDTH; y++) {
-            for (int x = 0; x < BOARD_WIDTH; x++) {
-                setFill((x + y) % 2, 0);
+        for (int x = 0; x < BOARD_WIDTH; x++) {
+            for (int y = 0; y < BOARD_WIDTH; y++) {
+                setFill(0,(x + y) % 2);
                 rect(x * CELLSIZE, y * CELLSIZE, CELLSIZE, CELLSIZE);
                 drawPiece(x, y);
             }
         }
+    }
+
+    private void highlightSelectedCell() {
+        // black or white is index 0
+        // green is index 1
+        // blue is index 2
+        setFill(1, ((selectedX + selectedY) % 2));
+        rect(selectedX * CELLSIZE, selectedY * CELLSIZE, CELLSIZE, CELLSIZE);
+        drawPiece(selectedX, selectedY);
+    }
+    private void highlightValidMoveCell(int x, int y) {
+        // black or white is index 0
+        // green is index 1
+        // blue is index 2
+        setFill(2, ((x + y) % 2));
+        rect(x * CELLSIZE, y * CELLSIZE, CELLSIZE, CELLSIZE);
     }
 
     private void drawPiece(int x, int y) {
