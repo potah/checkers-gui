@@ -174,7 +174,7 @@ public class App extends PApplet {
             } else {
                 fill(255); // White color for the piece
             }
-            ellipse((x + 0.5f) * CELLSIZE, (y + 0.5f) * CELLSIZE, CELLSIZE * 0.75f, CELLSIZE * 0.75f);
+            ellipse((x + 0.5f) * CELLSIZE, (y + 0.5f) * CELLSIZE, CELLSIZE * 0.7f, CELLSIZE * 0.7f);
         }
     }
 
