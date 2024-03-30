@@ -197,10 +197,10 @@ public class App extends PApplet {
     /**
      * Checks if a move is valid.
      *
-     * @param fromRow the starting row of the move.
-     * @param fromCol the starting column of the move.
-     * @param toRow   the ending row of the move.
-     * @param toCol   the ending column of the move.
+     * @param fromX the starting row of the move.
+     * @param fromY the starting column of the move.
+     * @param toX   the ending row of the move.
+     * @param toY   the ending column of the move.
      * @return true if the move is legal, false otherwise.
      */
     private boolean isValidMove(int fromX, int fromY, int toX, int toY) {
