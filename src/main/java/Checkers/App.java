@@ -124,7 +124,7 @@ public class App extends PApplet {
                 // Select the piece
                 // check to see if we're selecting our colour
                 Piece possiblePiece = board[x][y];
-                if ((white_move && possiblePiece.isBlack) {
+                if (white_move && possiblePiece.isBlack) {
                     // shit pants
                     selectedX = -1;
                     selectedY = -1;
