@@ -356,9 +356,9 @@ public class App extends PApplet {
             ellipse((x + 0.5f) * CELLSIZE, (y + 0.5f) * CELLSIZE, CELLSIZE * 0.5f, CELLSIZE * 0.5f);
 
             if(board[x][y].isBlack && board[x][y].isKing){
-                fill(255);
-            } else if(!board[x][y].isBlack && board[x][y].isKing){
                 fill(0);
+            } else if(!board[x][y].isBlack && board[x][y].isKing){
+                fill(255);
             }
             ellipse((x + 0.5f) * CELLSIZE, (y + 0.5f) * CELLSIZE, CELLSIZE * 0.3f, CELLSIZE * 0.3f);
         }
