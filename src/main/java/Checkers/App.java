@@ -154,7 +154,7 @@ public class App extends PApplet {
 
                 // Attempt to move the selected piece
                 // we want to move to where we have selected.
-                if (board[x][y] == null) {
+                if (board[x][y] == null && isValidMove(selectedX, selectedY, x, y)) {
                     processMove(x, y);
                     white_move = !white_move;
                     selectedPiece = null;
@@ -197,13 +197,13 @@ public class App extends PApplet {
     /**
      * Checks if a move is valid.
      *
-     * @param fromRow the starting row of the move.
-     * @param fromCol the starting column of the move.
-     * @param toRow   the ending row of the move.
-     * @param toCol   the ending column of the move.
+     * @param fromX the starting row of the move.
+     * @param fromY the starting column of the move.
+     * @param toX   the ending row of the move.
+     * @param toY   the ending column of the move.
      * @return true if the move is legal, false otherwise.
      */
-    private boolean isValidMove(int fromRow, int fromCol, int toRow, int toCol) {
+    private boolean isValidMove(int fromX, int fromY, int toX, int toY) {
         // Implement this method to check if a move is legal according to the rules of
         // Checkers.
         // check that from and to values are within bounds
@@ -219,16 +219,16 @@ public class App extends PApplet {
 //        }
 
         // check that the destination is empty
-        if (board[toRow][toCol] != null) {
+        if (board[toX][toY] != null) {
             return false;
         }
         // can't be same row or col
-        if (fromRow == toRow || fromCol == toCol) {
+        if (fromX == toX || fromY == toY) {
             return false;
         }
 
         // check that we have a valid piece w/b/W/B
-        Piece piece = board[fromRow][fromCol];
+        Piece piece = board[fromX][fromY];
         if (piece == null) {
             return false;
         }
@@ -240,36 +240,36 @@ public class App extends PApplet {
 
         // w can only go to smaller cols, b can only go to bigger cols
         // W or B can go forward or back
-        if (!piece.isBlack && !piece.isKing && toRow < fromRow) {
+        if (!piece.isBlack && !piece.isKing && toY < fromY) {
             return false;
         }
-        if (piece.isBlack && !piece.isKing && toRow > fromRow) {
+        if (piece.isBlack && !piece.isKing && toY > fromY) {
             return false;
         }
 
         // check that we are one different
-        if (Math.abs(fromRow - toRow) > 2 || Math.abs(fromCol - toCol) > 2) {
+        if (Math.abs(fromX - toX) > 2 || Math.abs(fromY - toY) > 2) {
             return false;
         }
 
         // check to see if the col/row diff is 2 then we must not have a piece jumped
-        if (Math.abs(fromRow - toRow) == 2) {
-            if (Math.abs(fromCol - toCol) != 2) {
+        if (Math.abs(fromY - toY) == 2) {
+            if (Math.abs(fromX - toX) != 2) {
                 // if one is 2 diff then so must the other
                 return false;
             }
 
-            int middleRow = fromRow + 1;
-            int middleCol = fromCol + 1;
+            int middleY = fromY + 1;
+            int middleX = fromX + 1;
             // check to see if we have a piece jumped
-            if (toRow < fromRow) {
-                middleRow = toRow + 1;
+            if (toX < fromX) {
+                middleX = toX + 1;
             }
-            if (toCol < fromCol) {
-                middleCol = toCol + 1;
+            if (toY < fromY) {
+                middleY = toY + 1;
             }
             // check for piece
-            if (board[middleRow][middleCol] == null) {
+            if (board[middleX][middleY] == null) {
                 return false;
             }
         }
