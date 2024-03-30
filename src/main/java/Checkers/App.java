@@ -46,6 +46,8 @@ public class App extends PApplet {
 
     private Piece[][] board = new Piece[BOARD_WIDTH][BOARD_WIDTH];
 
+    public boolean white_move = true;
+
     public App() {
         
     }
@@ -120,11 +122,144 @@ public class App extends PApplet {
         if (x >= 0 && x < BOARD_WIDTH && y >= 0 && y < BOARD_WIDTH) {
             if (selectedPiece == null && board[x][y] != null) {
                 // Select the piece
+                // check to see if we're selecting our colour
+                Piece possiblePiece = board[x][y];
+                if ((white_move && possiblePiece.isBlack) {
+                    // shit pants
+                    selectedX = -1;
+                    selectedY = -1;
+                    // do we want to output some kind of error here?
+                } else {
+                    selectedPiece = possiblePiece;
+                    selectedX = x;
+                    selectedY = y;
+                }
             } else if (selectedPiece != null) {
+                // check if we've re-selected another piece of the same colour first
+
                 // Attempt to move the selected piece
+                // we want to move to where we have selected.
+                if (board[x][y] == null) {
+                    processMove(x, y);
+                    white_move = !white_move;
+                    selectedPiece = null;
+                    selectedX = -1;
+                    selectedY = -1;
+                }
             }
         }
     }
+
+    private void processMove(int toRow, int toCol) {
+        board[selectedX][selectedY] = null;
+        board[toRow][toCol] = selectedPiece;
+
+        for (int i = 0; i < 8; i++) {
+            if (board[0][i].isBlack) {
+                board[0][i].isKing = true;
+            }
+        }
+        for (int i = 0; i < 8; i++) {
+            if (!board[7][i].isBlack) {
+                board[7][i].isKing = true;
+            }
+        }
+    }
+    private void highlightValidMoves(int fromRow, int fromCol) {
+        for (int x = 0; x < BOARD_WIDTH; x++) {
+            for (int y = 0; y < BOARD_WIDTH; y++) {
+                if (isValidMove(fromRow, fromCol, x, y)) {
+                    // makey bluey
+
+                }
+            }
+        }
+
+    }
+
+    /**
+     * Checks if a move is valid.
+     *
+     * @param fromRow the starting row of the move.
+     * @param fromCol the starting column of the move.
+     * @param toRow   the ending row of the move.
+     * @param toCol   the ending column of the move.
+     * @return true if the move is legal, false otherwise.
+     */
+    private boolean isValidMove(int fromRow, int fromCol, int toRow, int toCol) {
+        // Implement this method to check if a move is legal according to the rules of
+        // Checkers.
+        // check that from and to values are within bounds
+//        if (fromRow < 0 ||
+//                fromRow > 7 ||
+//                fromCol < 0 ||
+//                fromCol > 7 ||
+//                toRow < 0 ||
+//                toRow > 7 ||
+//                toCol < 0 ||
+//                toCol > 7) {
+//            return false;
+//        }
+
+        // check that the destination is empty
+        if (board[toRow][toCol] != null) {
+            return false;
+        }
+        // can't be same row or col
+        if (fromRow == toRow || fromCol == toCol) {
+            return false;
+        }
+
+        // check that we have a valid piece w/b/W/B
+        Piece piece = board[fromRow][fromCol];
+        if (piece == null) {
+            return false;
+        }
+
+        // check correct turn b should be mod 2 = 0
+        if (piece.isBlack && (moves % 2) != 0) {
+            return false;
+        }
+
+        // w can only go to smaller cols, b can only go to bigger cols
+        // W or B can go forward or back
+        if (piece == 'w' && toRow < fromRow) {
+            return false;
+        }
+        if (piece == 'b' && toRow > fromRow) {
+            return false;
+        }
+
+        // check that we are one different
+        if (Math.abs(fromRow - toRow) > 2 || Math.abs(fromCol - toCol) > 2) {
+            return false;
+        }
+
+        // check to see if the col/row diff is 2 then we must not have a piece jumped
+        if (Math.abs(fromRow - toRow) == 2) {
+            if (Math.abs(fromCol - toCol) != 2) {
+                // if one is 2 diff then so must the other
+                return false;
+            }
+
+            int middleRow = fromRow + 1;
+            int middleCol = fromCol + 1;
+            // check to see if we have a piece jumped
+            if (toRow < fromRow) {
+                middleRow = toRow + 1;
+            }
+            if (toCol < fromCol) {
+                middleCol = toCol + 1;
+            }
+            // check for piece
+            if (board[middleRow][middleCol] == ' ') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -142,6 +277,9 @@ public class App extends PApplet {
         drawBoard();
 		
 		//draw highlighted cells
+        if (selectedPiece != null) {
+            highlightValidMoves(selectedX, selectedY);
+        }
         
 		//check if the any player has no more pieces. The winner is the player who still has pieces remaining
 
