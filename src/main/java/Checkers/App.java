@@ -84,13 +84,13 @@ public class App extends PApplet {
         for (int y = 0; y < BOARD_WIDTH; y++) {
             for (int x = 0; x < BOARD_WIDTH; x += 2) {
                 if (y < 3) {
-                    if ((y % 2 == 0)) {
+                    if ((y % 2 == 1)) {
                         board[x][y] = new Piece(false);
                     } else {
                         board[x + 1][y] = new Piece(false);
                     }
                 } else if (y > 4) {
-                    if ((y % 2 == 0)) {
+                    if ((y % 2 == 1)) {
                         board[x][y] = new Piece(true);
                     } else {
                         board[x + 1][y] = new Piece(true);
@@ -180,7 +180,6 @@ public class App extends PApplet {
     }
 
     private void processMove(int toX, int toY) {
-        isGameOver();
         int deltaX = Math.abs(selectedX - toX);
         int deltaY = Math.abs(selectedY - toY);
 
@@ -327,8 +326,7 @@ public class App extends PApplet {
                 if (board[x][y] != null) {
                     if (board[x][y].isBlack) {
                         blackCount++;
-                    }
-                    if (!board[x][y].isBlack) {
+                    } else {
                         whiteCount++;
                     }
                 }
@@ -379,13 +377,14 @@ public class App extends PApplet {
         }
         
 		//check if the any player has no more pieces. The winner is the player who still has pieces remaining
+        isGameOver();
 
     }
 
     private void drawBoard() {
         for (int x = 0; x < BOARD_WIDTH; x++) {
             for (int y = 0; y < BOARD_WIDTH; y++) {
-                setFill(COLOURCODE_BLACKORWHITE,(x + y + 1) % 2);
+                setFill(COLOURCODE_BLACKORWHITE,(x + y) % 2);
                 rect(x * CELLSIZE, y * CELLSIZE, CELLSIZE, CELLSIZE);
                 drawPiece(x, y);
             }
