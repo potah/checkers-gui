@@ -39,6 +39,9 @@ public class App extends PApplet {
         }
 	};
 
+    public static final int COLOURCODE_BLACKORWHITE = 0;
+    public static final int COLOURCODE_GREEN = 1;
+    public static final int COLOURCODE_BLUE = 2;
     public static int WIDTH = CELLSIZE*BOARD_WIDTH+SIDEBAR;
     public static int HEIGHT = BOARD_WIDTH*CELLSIZE;
 
@@ -182,10 +185,10 @@ public class App extends PApplet {
             }
         }
     }
-    private void highlightValidMoves(int fromRow, int fromCol) {
+    private void highlightValidMoves(int fromX, int fromY) {
         for (int x = 0; x < BOARD_WIDTH; x++) {
             for (int y = 0; y < BOARD_WIDTH; y++) {
-                if (isValidMove(fromRow, fromCol, x, y)) {
+                if (isValidMove(fromX, fromY, x, y)) {
                     // make the cell blue
                     highlightValidMoveCell(x, y);
                 }
@@ -247,18 +250,19 @@ public class App extends PApplet {
             return false;
         }
 
+        int deltaX = Math.abs(fromX - toX);
+        int deltaY = Math.abs(fromY - toY);
+
+        if (deltaX != deltaY) {
+            return false;
+        }
         // check that we are one different
-        if (Math.abs(fromX - toX) > 2 || Math.abs(fromY - toY) > 2) {
+        if (deltaX > 2 || deltaY > 2) {
             return false;
         }
 
         // check to see if the col/row diff is 2 then we must not have a piece jumped
         if (Math.abs(fromY - toY) == 2) {
-            if (Math.abs(fromX - toX) != 2) {
-                // if one is 2 diff then so must the other
-                return false;
-            }
-
             int middleY = fromY + 1;
             int middleX = fromX + 1;
             // check to see if we have a piece jumped
@@ -306,7 +310,7 @@ public class App extends PApplet {
     private void drawBoard() {
         for (int x = 0; x < BOARD_WIDTH; x++) {
             for (int y = 0; y < BOARD_WIDTH; y++) {
-                setFill(0,(x + y) % 2);
+                setFill(COLOURCODE_BLACKORWHITE,(x + y) % 2);
                 rect(x * CELLSIZE, y * CELLSIZE, CELLSIZE, CELLSIZE);
                 drawPiece(x, y);
             }
@@ -317,7 +321,7 @@ public class App extends PApplet {
         // black or white is index 0
         // green is index 1
         // blue is index 2
-        setFill(1, ((selectedX + selectedY) % 2));
+        setFill(COLOURCODE_GREEN, ((selectedX + selectedY) % 2));
         rect(selectedX * CELLSIZE, selectedY * CELLSIZE, CELLSIZE, CELLSIZE);
         drawPiece(selectedX, selectedY);
     }
@@ -325,7 +329,7 @@ public class App extends PApplet {
         // black or white is index 0
         // green is index 1
         // blue is index 2
-        setFill(2, ((x + y) % 2));
+        setFill(COLOURCODE_BLUE, ((x + y) % 2));
         rect(x * CELLSIZE, y * CELLSIZE, CELLSIZE, CELLSIZE);
     }
 
