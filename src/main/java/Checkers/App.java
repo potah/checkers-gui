@@ -169,8 +169,31 @@ public class App extends PApplet {
     }
 
     private void processMove(int toX, int toY) {
+        int deltaX = Math.abs(selectedX - toX);
+        int deltaY = Math.abs(selectedY - toY);
+
         board[selectedX][selectedY] = null;
         board[toX][toY] = selectedPiece;
+
+        // remove the jumped piece if opposite colour
+        if (deltaX == 2) {
+            int midX, midY = 0;
+            if (toX > selectedX) {
+                midX = selectedX + 1;
+            } else {
+                midX = toX + 1;
+            }
+            if (toY > selectedY) {
+                midY = selectedY + 1;
+            } else {
+                midY = toY + 1;
+            }
+
+            Piece midPiece = board[midX][midY];
+            if (midPiece.isBlack != selectedPiece.isBlack) {
+                board[midX][midY] = null;
+            }
+        }
 
         for (int i = 0; i < 8; i++) {
             Piece piece = board[i][0];
