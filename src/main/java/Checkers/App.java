@@ -333,7 +333,7 @@ public class App extends PApplet {
     private void drawBoard() {
         for (int x = 0; x < BOARD_WIDTH; x++) {
             for (int y = 0; y < BOARD_WIDTH; y++) {
-                setFill(COLOURCODE_BLACKORWHITE,(x + y) % 2);
+                setFill(COLOURCODE_BLACKORWHITE,(x + y + 1) % 2);
                 rect(x * CELLSIZE, y * CELLSIZE, CELLSIZE, CELLSIZE);
                 drawPiece(x, y);
             }
