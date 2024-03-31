@@ -14,6 +14,8 @@ import java.awt.Font;
 import java.io.*;
 import java.util.*;
 
+import javax.swing.JOptionPane;
+
 public class App extends PApplet {
 
     public static final int CELLSIZE = 48;
@@ -178,6 +180,7 @@ public class App extends PApplet {
     }
 
     private void processMove(int toX, int toY) {
+        isGameOver();
         int deltaX = Math.abs(selectedX - toX);
         int deltaY = Math.abs(selectedY - toY);
 
@@ -316,7 +319,32 @@ public class App extends PApplet {
         return true;
     }
 
+    public void isGameOver(){
+        int blackCount = 0;
+        int whiteCount = 0;
+        for (int x = 0; x < BOARD_WIDTH; x++) {
+            for (int y = 0; y < BOARD_WIDTH; y++) {
+                if (board[x][y] != null) {
+                    if (board[x][y].isBlack) {
+                        blackCount++;
+                    }
+                    if (!board[x][y].isBlack) {
+                        whiteCount++;
+                    }
+                }
+            }
+        }
 
+        if (blackCount == 0){
+            // show white wins
+            JOptionPane.showMessageDialog(null, "White wins!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        if (whiteCount == 0){
+            // show black wins
+            JOptionPane.showMessageDialog(null, "Black wins!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
     @Override
     public void mouseDragged(MouseEvent e) {
         
