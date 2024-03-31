@@ -139,10 +139,11 @@ public class App extends PApplet {
         // Check if the selected cell is within bounds
         if (x >= 0 && x < BOARD_WIDTH && y >= 0 && y < BOARD_WIDTH) {
             if (selectedPiece == null && board[x][y] != null) {
-                // Select the piece
+                // Select the piecex
                 // check to see if we're selecting our colour
                 Piece possiblePiece = board[x][y];
-                if (white_move && possiblePiece.isBlack) {
+                if ((white_move && possiblePiece.isBlack) ||
+                        (!white_move && !possiblePiece.isBlack)) {
                     // shit pants
                     selectedX = -1;
                     selectedY = -1;
@@ -154,10 +155,18 @@ public class App extends PApplet {
                 }
             } else if (selectedPiece != null) {
                 // check if we've re-selected another piece of the same colour first
+                Piece clickedPiece = board[x][y];
 
-                // Attempt to move the selected piece
-                // we want to move to where we have selected.
-                if (board[x][y] == null && isValidMove(selectedX, selectedY, x, y)) {
+                if (clickedPiece != null) {
+                    if (x != selectedX || y != selectedY) {
+                        if (clickedPiece.isBlack == selectedPiece.isBlack) {
+                            // swap selected pieced and re-jigger
+                            selectedPiece = clickedPiece;
+                            selectedX = x;
+                            selectedY = y;
+                        }
+                    }
+                } else if (isValidMove(selectedX, selectedY, x, y)) {
                     processMove(x, y);
                     white_move = !white_move;
                     selectedPiece = null;
@@ -261,6 +270,9 @@ public class App extends PApplet {
 
         // check correct turn b should be mod 2 = 0
         if (piece.isBlack && white_move) {
+            return false;
+        }
+        if (!piece.isBlack && !white_move) {
             return false;
         }
 
