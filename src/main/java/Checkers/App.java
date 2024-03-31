@@ -337,12 +337,24 @@ public class App extends PApplet {
 
         if (blackCount == 0){
             // show white wins
-            JOptionPane.showMessageDialog(null, "White wins!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+            fill(255);
+            stroke(0);
+            strokeWeight(4.0f);
+            rect(App.WIDTH*0.2f-5, App.HEIGHT*0.4f-25, 150, 40); // Draw a rectangle for the text background.
+            fill(200,0,200);
+            textSize(24.0f);
+            text("White wins!", App.WIDTH*0.2f, App.HEIGHT*0.4f);
         }
 
         if (whiteCount == 0){
             // show black wins
-            JOptionPane.showMessageDialog(null, "Black wins!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+            fill(255);
+            stroke(0);
+            strokeWeight(4.0f);
+            rect(App.WIDTH*0.2f-5, App.HEIGHT*0.4f-25, 150, 40); // Draw a rectangle for the text background.
+            fill(200,0,200);
+            textSize(24.0f);
+            text("Black wins!", App.WIDTH*0.2f, App.HEIGHT*0.4f);
         }
     }
     @Override
